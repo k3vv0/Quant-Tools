@@ -12,7 +12,7 @@ import warnings
 from twilio.rest import Client
 from fredapi import Fred
 
-import secretkeys
+import keys
 
 
 def monitor_stock(period):
@@ -33,8 +33,8 @@ def monitor_stock(period):
         sell_sig = False
         action = "Hold"
         last_price = 0.0
-        account_sid = secretkeys.TWILIO_ACCOUNT_SID
-        auth_token = secretkeys.TWILIO_AUTH_TOKEN
+        account_sid = keys.TWILIO_ACCOUNT_SID
+        auth_token = keys.TWILIO_AUTH_TOKEN
         client = Client(account_sid, auth_token)
         while True:
             if keyboard.is_pressed('q'):
@@ -74,10 +74,10 @@ def monitor_stock(period):
                 # Read more at http://twil.io/secure
                 message = client.messages.create(
                     body=action + " " + str(tick) + ", Momentum: $" + str(momentum) + ".",
-                    from_=secretkeys.TWILIO_FROM_NUM,
-                    to=secretkeys.TWILIO_TO_NUM
+                    from_=keys.TWILIO_FROM_NUM,
+                    to=keys.TWILIO_TO_NUM
                 )
-                print(f"Sent message to {secretkeys.TWILIO_TO_NUM}, ID: ", message.sid)
+                print(f"Sent message to {keys.TWILIO_TO_NUM}, ID: ", message.sid)
             calc_sortino(rfr, stats['Return [%]'], rets)
             print("Current time:", time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
             print("_____________________________________________________")
@@ -419,7 +419,7 @@ def add_ticker_to_list(new_ticker, list_name="tickers_to_remove"):
 
 def get_risk_free_rate():
     # Replace 'your_api_key' with your actual FRED API key
-    api_key = secretkeys.FRED_API_KEY
+    api_key = keys.FRED_API_KEY
     fred = Fred(api_key=api_key)
 
     # Fetch the latest 13-week T-bill yield
